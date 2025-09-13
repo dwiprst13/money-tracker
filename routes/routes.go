@@ -18,6 +18,11 @@ func SetupRouter() *gin.Engine {
     {
         auth.POST("/transactions", controllers.CreateTransaction)
         auth.GET("/transactions", controllers.ListTransactions)
+
+        auth.GET("/reports", controllers.GetReports)
+
+        auth.POST("/budgets", controllers.SetBudget)
+        auth.GET("/budgets", controllers.GetBudgets)
     }
 
     return r
