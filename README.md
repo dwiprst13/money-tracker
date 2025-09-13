@@ -159,10 +159,10 @@ Header: X-User-ID: 1
 
 Rencana Pengembangan
 
- Ganti autentikasi ke JWT.
- Tambahkan OAuth (Google/Apple).
- Sinkronisasi real-time dengan WebSocket/Firebase.
- Dashboard grafik untuk laporan keuangan.
+- Ganti autentikasi ke JWT.
+- Tambahkan OAuth (Google/Apple).
+- Sinkronisasi real-time dengan WebSocket/Firebase.
+- Dashboard grafik untuk laporan keuangan.
 
 Lisensi
 
