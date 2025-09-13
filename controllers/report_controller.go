@@ -11,7 +11,8 @@ import (
 )
 
 func GetReports(c *gin.Context) {
-    userID := c.GetString("userID")
+    // userID := c.GetString("userID")
+    userID := "1"
 
     var totalIncome float64
     var totalExpense float64

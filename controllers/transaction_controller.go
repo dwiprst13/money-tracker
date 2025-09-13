@@ -1,9 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"time"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"money-tracker/config"
@@ -16,6 +16,32 @@ func GetTransactions(c *gin.Context) {
 	config.DB.Where("user_id = ?", 1).Order("date desc").Find(&transactions)
 	// config.DB.Where("user_id = ?", userID).Order("date desc").Find(&transactions)
 	c.JSON(http.StatusOK, transactions)
+}
+
+func GetIncomeTransactions(c *gin.Context) {
+	var incometransactions []models.Transaction
+	if err := config.DB.
+        Where("user_id = ? AND type = ?", 1, "income").
+        Order("date DESC").
+        Find(&incometransactions).Error; err != nil {
+        
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+	c.JSON(http.StatusOK, incometransactions)
+}
+
+func GetExpenseTransactions(c *gin.Context) {
+	var expensetransactions []models.Transaction
+	if err := config.DB.
+        Where("user_id = ? AND type = ?", 1, "expense").
+        Order("date DESC").
+        Find(&expensetransactions).Error; err != nil {
+        
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+	c.JSON(http.StatusOK, expensetransactions)
 }
 
 func CreateTransaction(c *gin.Context) {
