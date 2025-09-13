@@ -152,25 +152,16 @@ Header: X-User-ID: 1
 
 ## Tech Stack
 
-Go
-
-Gin
- – Web Framework
-
-GORM
- – ORM
-
-SQLite
- – Database
+- Go
+- Gin –> Web Framework
+- GORM –> ORM
+- SQLite –> Database
 
 Rencana Pengembangan
 
  Ganti autentikasi ke JWT.
-
  Tambahkan OAuth (Google/Apple).
-
  Sinkronisasi real-time dengan WebSocket/Firebase.
-
  Dashboard grafik untuk laporan keuangan.
 
 Lisensi
