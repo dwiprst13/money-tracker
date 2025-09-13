@@ -1,29 +1,25 @@
 package routes
 
 import (
-    "money-tracker/controllers"
-    "money-tracker/middleware"
-
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+	"money-tracker/controllers"
+	"money-tracker/middlewares"
 )
 
-func SetupRouter() *gin.Engine {
-    r := gin.Default()
+func SetupRoutes(r *gin.Engine) {
+	r.Use(middlewares.CORSMiddleware())
 
-    r.POST("/register", controllers.Register)
-    r.POST("/login", controllers.Login)
+	api := r.Group("/api")
+	{
+		api.POST("/register", controllers.Register)
+		api.POST("/login", controllers.Login)
+		
+		api.GET("/transactions", controllers.GetTransactions)
+		api.POST("/transactions", controllers.CreateTransaction)
 
-    auth := r.Group("/")
-    auth.Use(middleware.AuthMiddleware())
-    {
-        auth.POST("/transactions", controllers.CreateTransaction)
-        auth.GET("/transactions", controllers.ListTransactions)
+		api.GET("/budgets", controllers.GetBudgets)
+		api.POST("/budgets", controllers.CreateBudget)
 
-        auth.GET("/reports", controllers.GetReports)
-
-        auth.POST("/budgets", controllers.SetBudget)
-        auth.GET("/budgets", controllers.GetBudgets)
-    }
-
-    return r
+		api.GET("/reports", controllers.GetReports)
+	}
 }

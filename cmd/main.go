@@ -1,12 +1,21 @@
 package main
 
 import (
-    "money-tracker/config"
-    "money-tracker/routes"
+	"log"
+	"money-tracker/config"
+	"money-tracker/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-    config.ConnectDatabase()
-    r := routes.SetupRouter()
-    r.Run(":8080")
+	config.ConnectDB()
+
+	r := gin.Default()
+
+	routes.SetupRoutes(r)
+
+	if err := r.Run(":8081"); err != nil {
+		log.Fatalf("❌ Server failed to start: %v", err)
+	}
 }

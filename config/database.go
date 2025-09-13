@@ -1,23 +1,38 @@
 package config
 
 import (
-    "fmt"
-    "gorm.io/driver/mysql"
-    "gorm.io/gorm"
-    "money-tracker/models"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
-func ConnectDatabase() {
-	
-    dsn := "root:password@tcp(127.0.0.1:3306)/money_tracker?charset=utf8mb4&parseTime=True&loc=Local"
-    database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-    if err != nil {
-        panic(fmt.Sprintf("Failed to connect to MySQL database: %v", err))
-    }
+func ConnectDB() {
+	// load .env
+	if err := godotenv.Load(); err != nil {
+		log.Println("⚠️  No .env file found, using system env")
+	}
 
-    database.AutoMigrate(&models.User{}, &models.Transaction{}, &models.Budget{})
+	dbUser := os.Getenv("DB_USERNAME")
+	dbPass := os.Getenv("DB_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_DATABASE")
 
-    DB = database
+	// format DSN
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		dbUser, dbPass, dbHost, dbPort, dbName)
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("❌ Failed to connect to database: %v", err)
+	}
+
+	log.Println("✅ Database connected successfully")
+	DB = db
 }
