@@ -24,7 +24,6 @@ func SetBudget(c *gin.Context) {
     var budget models.Budget
     err := config.DB.Where("user_id = ? AND category = ?", utils.ParseUint(userID), input.Category).First(&budget).Error
     if err != nil {
-        // create baru
         budget = models.Budget{
             UserID:   utils.ParseUint(userID),
             Category: input.Category,
@@ -32,7 +31,6 @@ func SetBudget(c *gin.Context) {
         }
         config.DB.Create(&budget)
     } else {
-        // update
         budget.Amount = input.Amount
         config.DB.Save(&budget)
     }
