@@ -1,7 +1,8 @@
 package config
 
 import (
-    "gorm.io/driver/sqlite"
+    "fmt"
+    "gorm.io/driver/mysql"
     "gorm.io/gorm"
     "money-tracker/models"
 )
@@ -9,11 +10,14 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-    database, err := gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+	
+    dsn := "root:password@tcp(127.0.0.1:3306)/money_tracker?charset=utf8mb4&parseTime=True&loc=Local"
+    database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
     if err != nil {
-        panic("Failed to connect to database!")
+        panic(fmt.Sprintf("Failed to connect to MySQL database: %v", err))
     }
 
     database.AutoMigrate(&models.User{}, &models.Transaction{}, &models.Budget{})
+
     DB = database
 }
